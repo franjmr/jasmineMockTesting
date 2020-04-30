@@ -21,9 +21,20 @@ describe("Continuous Appraisal - Person Click Smoke (Suite)", function () {
         meta4.cont_appraisal.cont_appraisal_ess.__test__only__._setM4Object_PlcoCpMtHrRole(mock_M4ObjectInstance);
 
         // Mock meta4.data
+        function mock_dataGetValue(node,item){
+            if(!item){
+                return null;
+            }
+            if(item === "PLCO_EMP_TYPE"){
+                return "0";
+            }else{
+                return "1";
+            }
+        }
+
         meta4.data = {}
         meta4.data.utils = {};
-        meta4.data.utils.getValue = jasmine.createSpy('m4dataGetValue').and.callFake(() => "1");
+        meta4.data.utils.getValue = jasmine.createSpy('m4dataGetValue').and.callFake(mock_dataGetValue);
         meta4.data.execute = jasmine.createSpy('m4DataExec');
     });
 
