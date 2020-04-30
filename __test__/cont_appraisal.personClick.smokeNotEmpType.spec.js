@@ -3,18 +3,21 @@ if(window.require){
     require("../cont_appraisal");
 }
 
-describe("Continuous Appraisal - Person Click Smoke (Suite)", function () {
+describe("Continuous Appraisal - Person Click Smoke Not Employe Type (Suite)", function () {
     var mock_M4Request;
     var mock_M4Object;
     var mock_M4ObjectInstance;
 
     beforeEach(function () {
+        //Clear old values
+        meta4.cont_appraisal.cont_appraisal_ess.__test__only__._clearPrivateAttributes();
+
         // Mock meta4.m4jsapi
         mock_M4Request = jasmine.createSpy('M4Request');
         mock_M4Request.prototype.addReference = jasmine.createSpy('addReference');
 
         mock_M4Object = jasmine.createSpy('M4Object');
-        mock_M4ObjectInstance = jasmine.createSpyObj("m4Object",['getNode']);
+        mock_M4ObjectInstance = jasmine.createSpyObj("m4Object",['getNode','moveTo','isDeleted']);
 
         meta4.M4Request = mock_M4Request;
         meta4.M4Object = mock_M4Object;
@@ -22,14 +25,10 @@ describe("Continuous Appraisal - Person Click Smoke (Suite)", function () {
 
         // Mock meta4.data
         function mock_dataGetValue(node,item){
-            if(!item){
-                return null;
-            }
             if(item === "PLCO_EMP_TYPE"){
                 return "0";
-            }else{
-                return "1";
             }
+            return "1";
         }
 
         meta4.data = {}
@@ -43,12 +42,12 @@ describe("Continuous Appraisal - Person Click Smoke (Suite)", function () {
         expect(personClick).not.toThrow();
     });
 
-    xit("should create three M4Objects instances", function () {
+    it("should create three M4Objects instances", function () {
         meta4.cont_appraisal.cont_appraisal_ess.__test__only__.personClick();
         expect(mock_M4Object).toHaveBeenCalledTimes(3);
-        expect(mock_M4Object.calls.argsFor(0)).toEqual('PLCO_CP_MT_KNOW_MAP', 'PLCO_CP_MT_KNOW_MAP');
-        expect(mock_M4Object.calls.argsFor(1)).toEqual('PLCO_CP_MT_OBJ_CUAN', 'PLCO_CP_MT_OBJ_CUAN');
-        expect(mock_M4Object.calls.argsFor(2)).toEqual('PLCO_CP_MT_OBJ_CUALI', 'PLCO_CP_MT_OBJ_CUALI');
+        expect(mock_M4Object.calls.argsFor(0)).toEqual(['PLCO_CP_MT_KNOW_MAP', 'PLCO_CP_MT_KNOW_MAP']);
+        expect(mock_M4Object.calls.argsFor(1)).toEqual(['PLCO_CP_MT_OBJ_CUAN', 'PLCO_CP_MT_OBJ_CUAN']);
+        expect(mock_M4Object.calls.argsFor(2)).toEqual(['PLCO_CP_MT_OBJ_CUALI', 'PLCO_CP_MT_OBJ_CUALI']);
     });
 
     it("should create a single M4Request instance", function () {
@@ -57,7 +56,7 @@ describe("Continuous Appraisal - Person Click Smoke (Suite)", function () {
         expect(meta4.M4Request).toHaveBeenCalledWith(jasmine.any(Object), 'PLCO_CP_MT_HR_ROLE', 'PLCO_LOAD_ACTIVITY', null);
     });
 
-    it("should add three reference into M4Request", function () {
+    it("should add three references into M4Request", function () {
         meta4.cont_appraisal.cont_appraisal_ess.__test__only__.personClick();
         expect(mock_M4Request.prototype.addReference).toHaveBeenCalledTimes(3);
         expect(mock_M4Request.prototype.addReference.calls.argsFor(0)).toEqual(['PLCO_CP_MT_KNOW_MAP', jasmine.any(Object)]);
@@ -68,6 +67,14 @@ describe("Continuous Appraisal - Person Click Smoke (Suite)", function () {
     it("should execute a M4Request instance", function () {
         meta4.cont_appraisal.cont_appraisal_ess.__test__only__.personClick();
         expect(meta4.data.execute).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Function));
+    });
+
+    it("should not initialize m4objects again if the instances already exist", function(){
+        var personClickFirstCall = meta4.cont_appraisal.cont_appraisal_ess.__test__only__.personClick;
+        var personClickSecondCall = meta4.cont_appraisal.cont_appraisal_ess.__test__only__.personClick;
+        expect(personClickFirstCall).not.toThrow();
+        expect(personClickSecondCall).not.toThrow();
+        expect(mock_M4Object).toHaveBeenCalledTimes(3);
     });
 
 });
