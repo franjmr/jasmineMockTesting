@@ -11,7 +11,6 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 		var nodePLCO_CP_HR_ACTIVITIES = null;
 		var nodePLCO_CP_HR_ACTIVITY_FEEDBACK = null;
 		var _t3PLCO_CP_MT_KNOW_MAP = null;
-		
 		var _t3PLCO_CP_MT_OBJ_CUAN = null;
 		var _t3PLCO_CP_MT_OBJ_CUALI = null;
 		
@@ -483,6 +482,9 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 		}
 
 		function finishAction(pos){
+            if(!pos){
+                return;
+            }
 			nodePLCO_CP_HR_ACTIVITIES.moveTo(pos);
 			var onCloseHandlerFinish = function(e) {
 				formFinish.destroyPopUp();	
@@ -820,31 +822,20 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 			createDataFeedback(container, showAll);
 		}
 
-		function createButtonsActions(container,showbtnAddFeedback,showFinish,showCancel,showDelete,showAsk,showEdit){
+		function createButtonsActions(m4NodeCurrent, showValues){
 			var actions = [];
 
-            var divActions = new Element('div', {
-                'class': 'm4-flex size120 center middle'
-            });	
-
-			var actionsOptions = {
-				id: 'groupedActionsMain_'+ nodePLCO_CP_HR_ACTIVITIES.getCurrent(),
-				label: meta4.widget.translate.getTranslate('_btnActions')
-			};
-			
-			var groupedActions = new meta4.widget.GroupedActions(container, actionsOptions);
-			
 			// Options Buttons Grouped Actions
 
 			// Editar			
-			if (showEdit === 1){
+			if (showValues.showEdit === 1){
 				var btnEdit = {
 					id: 'buttonEdit',
 					title: meta4.widget.translate.getTranslate('_btnEdit'),
 					functionClick: function (pos) {
 						//alert('Editar');
 						editActivity(pos); 	
-					}.bind(this, nodePLCO_CP_HR_ACTIVITIES.getCurrent()),
+					}.bind(this, m4NodeCurrent),
 					'button': {
 						'text': meta4.widget.translate.getTranslate('_btnEdit'),
 						'icon': meta4.widget.icons.edit
@@ -855,13 +846,13 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 
 
 			// Borrar
-			if (showDelete === 1){
+			if (showValues.showDelete === 1){
 				var btnDelete = {
 					//id: 'buttonDelete',
 					title: meta4.widget.translate.getTranslate('_btnDelete'),
 					functionClick: function (pos) {
 						deleteAction(pos);
-					}.bind(this, nodePLCO_CP_HR_ACTIVITIES.getCurrent()),
+					}.bind(this, m4NodeCurrent),
 					'button': {
 						'text': meta4.widget.translate.getTranslate('_btnDelete'),
 						'icon': meta4.widget.icons.delete_c
@@ -872,13 +863,13 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 	
 			
 			// DarFeedback
-			if (showbtnAddFeedback === 1){
+			if (showValues.showbtnAddFeedback === 1){
 				var btnFeedback = {
-					id: 'buttonFeedback_'+ nodePLCO_CP_HR_ACTIVITIES.getCurrent(),
+					id: 'buttonFeedback_'+ m4NodeCurrent,
 					title: meta4.widget.translate.getTranslate('_btnFeedback'),
 					functionClick: function (pos) {
 						newFeedback(pos);
-					}.bind(this, nodePLCO_CP_HR_ACTIVITIES.getCurrent()),
+					}.bind(this, m4NodeCurrent),
 					'button': {
 						'text': meta4.widget.translate.getTranslate('_btnFeedback'),
 						'icon': meta4.widget.icons.bubble_pencil_ln
@@ -889,13 +880,13 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 		
 
 			// Cancelar
-			if (showCancel === 1){
+			if (showValues.showCancel === 1){
 				var btnCancel = {
-					//id: 'buttonCancel_'+ nodePLCO_CP_HR_ACTIVITIES.getCurrent(),
+					id: 'buttonCancel_'+ m4NodeCurrent,
 					title: meta4.widget.translate.getTranslate('_btnCancel'),
 					functionClick: function (pos) {
 						cancelAction(pos);
-					}.bind(this, nodePLCO_CP_HR_ACTIVITIES.getCurrent()),
+					}.bind(this, m4NodeCurrent),
 					'button': {
 						'text': meta4.widget.translate.getTranslate('_btnCancel'),
 						'icon': meta4.widget.icons.stack_cancel
@@ -905,13 +896,13 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 			}	
 			
 			// Finalizar
-			if (showFinish === 1){
+			if (showValues.showFinish === 1){
 				var btnFinish = {
-					id: 'buttonComplete_'+ nodePLCO_CP_HR_ACTIVITIES.getCurrent(),
+					id: 'buttonComplete_'+ m4NodeCurrent,
 					title: meta4.widget.translate.getTranslate('_btnComplete'),
 					functionClick: function (pos) {
 						finishAction(pos);
-					}.bind(this, nodePLCO_CP_HR_ACTIVITIES.getCurrent()),
+					}.bind(this, m4NodeCurrent),
 					'button': {
 						'text': meta4.widget.translate.getTranslate('_btnComplete'),
 						'icon': meta4.widget.icons.finish
@@ -921,25 +912,22 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 			}			
 			
 			// Pedir Feedback
-			if (showAsk === 1){
+			if (showValues.showAsk === 1){
 				var btnAskFeedback = {
-					//id: 'buttonAskFeedback',
+					id: 'buttonAskFeedback'+ m4NodeCurrent,
 					title: meta4.widget.translate.getTranslate('_btnAskFeedback'),
 					functionClick: function (pos) {
 						askFeedback(pos);
-					}.bind(this, nodePLCO_CP_HR_ACTIVITIES.getCurrent()),
+					}.bind(this, m4NodeCurrent),
 					'button': {
 						'text': meta4.widget.translate.getTranslate('_btnAskFeedback'),
 						'icon': meta4.widget.icons.users_group
 					}
 				};
 				actions.push(btnAskFeedback);		
-			}	
-
-
-			// Add actions to grouped actions
-			groupedActions.add(actions);
-
+            }	
+            
+            return actions;
 		}
 
 		function createDataActivity(container) {
@@ -974,6 +962,7 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 			var dateFinish = valuesItems[11];
 			var showAsk = valuesItems[12];
 			var showEdit = valuesItems[13];
+            var showValues = getShowValues();
 
 			//Activity data:
 			var divActivityData = new Element('div', {
@@ -1135,7 +1124,9 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 				createButtonsActions(divActions,showbtnAddFeedback,showFinish,showCancel,showDelete,showAsk,showEdit);
 			} else if ((idStatus === '02') && (showEdit === 1)){
 				//finalizada: solo se puede editar
-				createButtonsActions(divActions,0,0,0,0,0,showEdit);
+                var current = nodePLCO_CP_HR_ACTIVITIES.getCurrent();
+                var actions = createButtonsActions(current, showValues);
+                addButtonActions(current, divActions, actions);
 			}
 
             
@@ -1690,17 +1681,15 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 
 		}
 		
-		function personClick (event) {	
-		
+		function personClick () {	
 			var request = new meta4.M4Request(t3PLCO_CP_MT_HR_ROLE, PLCO_CP_MT_HR_ROLE, 'PLCO_LOAD_ACTIVITY', null);
 			empType=meta4.data.utils.getValue(nodePLCO_CP_MT_HR_ROLE, 'PLCO_EMP_TYPE');
 			if ( empType=== "0"){
-
 				if( hasCriteria=== null) {
 					hasCriteria=meta4.data.utils.getValue(nodePLCO_CP_MT_HR_ROLE, 'PLCO_WITH_CRITERIA');
 					hasCriEk=meta4.data.utils.getValue(nodePLCO_CP_MT_HR_ROLE, 'PLCO_WITH_EK');
 					hasCriObjCuan=meta4.data.utils.getValue(nodePLCO_CP_MT_HR_ROLE, 'PLCO_WITH_OBJ_CUAN');
-					 hasCriObjCual=meta4.data.utils.getValue(nodePLCO_CP_MT_HR_ROLE, 'PLCO_WITH_OBJ_CUAL');
+					hasCriObjCual=meta4.data.utils.getValue(nodePLCO_CP_MT_HR_ROLE, 'PLCO_WITH_OBJ_CUAL');
 				}	
 				if (hasCriEk==="1"){ 
 					if( _t3PLCO_CP_MT_KNOW_MAP=== null) {
@@ -1720,12 +1709,9 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 					}
 					request.addReference('PLCO_CP_MT_OBJ_CUALI', _t3PLCO_CP_MT_OBJ_CUALI);
 				}
-			} 
-
-
-				meta4.data.execute(request, paintPanelCenter);	
-		
-			
+            } 
+            
+			meta4.data.execute(request, paintPanelCenter);	
 		}
 
 
@@ -1799,15 +1785,11 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 			var titlebar = new meta4.widget.titlebar('header', options);			 	
 		}
 
-		function paintDom() {
-			nodePLCO_CP_MT_HR_ROLE = t3PLCO_CP_MT_HR_ROLE.getNode('PLCO_CP_MT_HR_ROLE');
-			nodePLCO_CP_HR_ACTIVITIES = t3PLCO_CP_MT_HR_ROLE.getNode('PLCO_CP_HR_ACTIVITIES');
-			nodePLCO_CP_HR_ACTIVITY_FEEDBACK = t3PLCO_CP_MT_HR_ROLE.getNode('PLCO_CP_HR_ACTIVITY_FEEDBACK');
-
+        function paintDom() {
 			paintTitleBar();
 	        paintSplit(); 		
 		    paintTableLeft();			
-		}
+        }
 
 		function _init() {
 
@@ -1818,13 +1800,118 @@ meta4.cont_appraisal.cont_appraisal_ess= ( function() {
 			$(document.head).getElement('title').set('text', t3PLCO_CP_MT_HR_ROLE.getObjectMetadata().getProperty('Name'));
 	
 			var request = new meta4.M4Request(t3PLCO_CP_MT_HR_ROLE, PLCO_CP_MT_HR_ROLE, 'PLCO_BEFORE_LOAD', null);
-			meta4.data.execute(request, paintDom);
+			meta4.data.execute(request, onInitSuccess);
 	
 			$('main').setStyle('visibility', 'visible');
-		}
+        }
+
+        // AUTOMATION TEST REFACTOR > Getter and Setters
+        function getShowValues(valuesItems){
+            var _defaultHidden = 0;
+
+            var showbtnAddFeedback = valuesItems[6] ? valuesItems[6] : _defaultHidden;
+            var showFinish = valuesItems[8] ? valuesItems[8] : _defaultHidden;
+            var showCancel = valuesItems[9] ? valuesItems[9] : _defaultHidden;
+            var showDelete = valuesItems[10] ? valuesItems[10] : _defaultHidden;
+            var showAsk = valuesItems[12] ? valuesItems[12] : _defaultHidden;
+            var showEdit = valuesItems[13] ? valuesItems[13] : _defaultHidden;
+
+            return {
+                showEdit: showEdit,
+                showDelete: showDelete,
+                showbtnAddFeedback: showbtnAddFeedback,
+                showCancel: showCancel,
+                showFinish: showFinish,
+                showAsk: showAsk,
+            }
+        }
+
+        function addButtonActions(m4NodeCurrent, container, buttonsAction){
+            if(!container){
+                return;
+            }
+
+            var actionsOptions = {
+				id: 'groupedActionsMain_'+ m4NodeCurrent,
+				label: meta4.widget.translate.getTranslate('_btnActions')
+			};
+			
+            var groupedActions = new meta4.widget.GroupedActions(container, actionsOptions);
+            
+            groupedActions.add(buttonsAction);
+        }
+
+        function onInitSuccess(){
+            _initNodes(t3PLCO_CP_MT_HR_ROLE);
+            paintDom();
+        }
+        
+        function _initNodes(){
+			_setNode_PlcoCpMtHrRole();
+			_setNode_PlcoCpHrActivities();
+			_setNode_PlcoCpHrActivityFeedback();
+        }
+
+        function _clearPrivateAttributes(){
+            t3PLCO_CP_MT_HR_ROLE = null;
+            nodePLCO_CP_MT_HR_ROLE = null;
+            nodePLCO_CP_HR_ACTIVITIES = null;
+            nodePLCO_CP_HR_ACTIVITY_FEEDBACK = null;
+
+            _t3PLCO_CP_MT_KNOW_MAP = null;
+            _t3PLCO_CP_MT_OBJ_CUAN = null;
+            _t3PLCO_CP_MT_OBJ_CUALI = null;
+            
+            empType= null;
+            hasCriteria= null;
+            hasCriEk= null;
+            hasCriObjCuan= null;
+            hasCriObjCual= null;
+        }
+                
+        function _setHasCriteria(criteriaValue){
+            hasCriteria = criteriaValue;
+        }
+
+        function _getNode_PlcoCpHrActivities(){
+            return nodePLCO_CP_HR_ACTIVITIES;
+        }
+
+        function _setNode_PlcoCpHrActivities(){
+            nodePLCO_CP_HR_ACTIVITIES = _getMObject_PlcoCpMtHrRole().getNode('PLCO_CP_HR_ACTIVITIES');
+        }
+
+        function _setNode_PlcoCpMtHrRole(){
+            nodePLCO_CP_MT_HR_ROLE = _getMObject_PlcoCpMtHrRole().getNode('PLCO_CP_MT_HR_ROLE');
+        }
+
+        function _setNode_PlcoCpHrActivityFeedback(){
+            nodePLCO_CP_HR_ACTIVITY_FEEDBACK = _getMObject_PlcoCpMtHrRole().getNode('PLCO_CP_HR_ACTIVITY_FEEDBACK');
+        }
+
+        function _setM4Object_PlcoCpMtHrRole(m4object){
+            t3PLCO_CP_MT_HR_ROLE = m4object;
+        }
+
+        function _getMObject_PlcoCpMtHrRole(){
+            return t3PLCO_CP_MT_HR_ROLE;
+        }
+        
+        var __test__only__ = {};
+        __test__only__._clearPrivateAttributes = _clearPrivateAttributes;
+        __test__only__._setNode_PlcoCpHrActivities = _setNode_PlcoCpHrActivities;
+        __test__only__._setNode_PlcoCpMtHrRole = _setNode_PlcoCpMtHrRole;
+        __test__only__._setM4Object_PlcoCpMtHrRole = _setM4Object_PlcoCpMtHrRole;
+        __test__only__._setHasCriteria = _setHasCriteria;
+        __test__only__._getNode_PlcoCpHrActivities = _getNode_PlcoCpHrActivities;
+        __test__only__.createButtonsActions = createButtonsActions;
+        __test__only__.addButtonActions = addButtonActions;
+        __test__only__.finishAction = finishAction;
+        __test__only__.personClick = personClick;
 
 		return {
-			init : _init
+            init : _init,
+            __test__only__: __test__only__
 		};
 
 	}());
