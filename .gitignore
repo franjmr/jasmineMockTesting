@@ -1,2 +1,1 @@
-coverage/**/*
-__test__/lib/*
+**/coverage/**/*
