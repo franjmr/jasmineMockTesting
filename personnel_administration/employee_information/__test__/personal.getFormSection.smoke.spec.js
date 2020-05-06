@@ -1,5 +1,5 @@
 if(window.require){
-    require("./lib/jasmine-3.5.0/jasmine");
+    require("../../../__lib__/jasmine-3.5.0/jasmine");
     require("../personal");
 }
 
@@ -18,22 +18,14 @@ describe("PA - Personnel.Admin > Emp.Info > Personal - getFormSection (Suite)", 
 
         meta4.pa.employeeInformation.Personal.__test__only__._mock_utils(mock_utils);
 
-        mock_m4Node = jasmine.createSpyObj('mock_m4node', ['getCurrent']);
+        mock_m4Node = jasmine.createSpyObj('mock_m4node', {
+            'getCurrent': 1
+        });
+
         mock_m4Object = jasmine.createSpy('mock_m4object');
     });
 
-    it("should not throws an exception", function () {
-        var idForm = "MOCK_ID_FORM";
-        var idNode = "MOCK_ID_NODE";
-        var node = mock_m4Node;
-        var channel = mock_m4Object;
-
-        var originalFunction = meta4.pa.employeeInformation.Personal.__test__only__._getFormToSection;
-        
-        expect(originalFunction,idForm,idNode,node,channel).not.toThrow();
-    });
-
-    it("should load form with current position", function () {
+    it("should create widget form with core properties", function () {
         var idForm = "MOCK_ID_FORM";
         var idNode = "MOCK_ID_NODE";
         var node = mock_m4Node;
@@ -42,12 +34,24 @@ describe("PA - Personnel.Admin > Emp.Info > Personal - getFormSection (Suite)", 
         var form = meta4.pa.employeeInformation.Personal.__test__only__._getFormToSection(idForm, idNode, node, channel);
         
         expect(form).toBeTruthy();
+        expect(mock_utils.getM4Form_Table).toHaveBeenCalledWith(idForm);
         expect(mock_form.setChannel).toHaveBeenCalledWith(channel);
         expect(mock_form.setNode).toHaveBeenCalledWith(idNode);
+    });
+
+    it("should create widget form with current position", function () {
+        var idForm = "MOCK_ID_FORM";
+        var idNode = "MOCK_ID_NODE";
+        var node = mock_m4Node;
+        var channel = mock_m4Object;
+
+        var form = meta4.pa.employeeInformation.Personal.__test__only__._getFormToSection(idForm, idNode, node, channel);
+        
+        expect(form).toBeTruthy();
         expect(mock_form.setCurrentIndex).toHaveBeenCalled();
     });
 
-    it("should load form without current position", function () {
+    it("should create widget form without current position", function () {
         var idForm = "MOCK_ID_FORM";
         var idNode = "MOCK_ID_NODE";
         var node = null;
@@ -56,8 +60,6 @@ describe("PA - Personnel.Admin > Emp.Info > Personal - getFormSection (Suite)", 
         var form = meta4.pa.employeeInformation.Personal.__test__only__._getFormToSection(idForm, idNode, node, channel);
         
         expect(form).toBeTruthy();
-        expect(mock_form.setChannel).toHaveBeenCalledWith(channel);
-        expect(mock_form.setNode).toHaveBeenCalledWith(idNode);
         expect(mock_form.setCurrentIndex).not.toHaveBeenCalled();
     });
 

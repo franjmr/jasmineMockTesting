@@ -1,5 +1,5 @@
 if(window.require){
-    require("./lib/jasmine-3.5.0/jasmine");
+    require("../../../__lib__/jasmine-3.5.0/jasmine");
     require("../personal");
 }
 
@@ -49,7 +49,7 @@ describe("PA - Personnel.Admin > Emp.Info > Personal - getFormDocsPerson (Suite)
         meta4.pa.employeeInformation.Personal.__test__only__._mock_utils(mock_utils);
     });
 
-    it("should create a form component", function () {
+    it("should create a widget form component", function () {
         var args = {
             dataEmpMod: false,
             idForm: "STUB_ID_FORM"
@@ -58,12 +58,9 @@ describe("PA - Personnel.Admin > Emp.Info > Personal - getFormDocsPerson (Suite)
         var formDoc = meta4.pa.employeeInformation.Personal.__test__only__._getFormDocsPerson(args);
 
         expect(formDoc).toBeTruthy();
-        expect(formDoc.setChannel).toHaveBeenCalled();
-        expect(formDoc.setNode).toHaveBeenCalled();
-        expect(formDoc.setCurrentIndex).toHaveBeenCalled();
     });
 
-    it("should set form validations", function () {
+    it("should set validations in widget form component", function () {
         var args = {
             dataEmpMod: false,
             idForm: "STUB_ID_FORM"
@@ -74,7 +71,7 @@ describe("PA - Personnel.Admin > Emp.Info > Personal - getFormDocsPerson (Suite)
         expect(formDoc.setValidations).toHaveBeenCalled();
     });
 
-    it("should add four childs in the form component", function () {
+    it("should add four childs in the widget form component", function () {
         var args = {
             dataEmpMod: false,
             idForm: "STUB_ID_FORM"
@@ -85,15 +82,15 @@ describe("PA - Personnel.Admin > Emp.Info > Personal - getFormDocsPerson (Suite)
         expect(formDoc.addChild).toHaveBeenCalledTimes(4);
     });
 
-    it("should add document type list as first child", function () {
+    it("should add document type list as first child in the widget form component", function () {
         var args = {
             dataEmpMod: false,
             idForm: "STUB_ID_FORM"
         };
 
         var formDoc = meta4.pa.employeeInformation.Personal.__test__only__._getFormDocsPerson(args);
+        
         var callAddChildArgs = formDoc.addChild.calls.argsFor(0)
-
         expect(mock_utils.getM4ListJsFull).toHaveBeenCalledWith('SCO_ID_DOC_TYPE',undefined);
         expect(callAddChildArgs[0]).toEqual(mock_setOptionsList);
     });

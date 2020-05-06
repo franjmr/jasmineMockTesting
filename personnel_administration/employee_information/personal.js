@@ -370,11 +370,16 @@ meta4.pa.employeeInformation.Personal = function () {
      * @returns {meta4.exports.widget.m4Form}
      */
     function _getFormToSection(idForm, idNode, node, channel) {
+        var currentNode = node ? node.getCurrent(): null;
+        return _getFormToSection_Refactor(idForm,idNode,currentNode,channel);
+    }
+
+    function _getFormToSection_Refactor(idForm, idNode, currentNode, channel) {
         var formTmp = _utils.getM4Form_Table(idForm);
         formTmp.setChannel(channel);
         formTmp.setNode(idNode);
-        if (node !== undefined && node !== null) {
-            formTmp.setCurrentIndex(node.getCurrent());
+        if (currentNode) {
+            formTmp.setCurrentIndex(currentNode);
         }
         return formTmp;
     }
@@ -524,7 +529,8 @@ meta4.pa.employeeInformation.Personal = function () {
         var formDocsPerson = null;
 
         //Formulario
-        formDocsPerson = _getFormToSection(args.idForm, nodeDocs.getId(), nodeDocs, nodeDocs.getObject());
+        // Refactor Automation: formDocsPerson = _getFormToSection(args.idForm, nodeDocs.getId(), nodeDocs, nodeDocs.getObject());
+        formDocsPerson = _getFormToSection_Refactor(args.idForm, nodeDocs.getId(), nodeDocs.getCurrent(), nodeDocs.getObject());
 
         var multiTypeStateDocs = null;
 
