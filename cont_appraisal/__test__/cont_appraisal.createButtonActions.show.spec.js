@@ -1,5 +1,5 @@
 if(window.require){
-    require("./lib/jasmine-3.5.0/jasmine");
+    require("../../__lib__/jasmine-3.5.0/jasmine");
     require("../cont_appraisal");
 }
 
