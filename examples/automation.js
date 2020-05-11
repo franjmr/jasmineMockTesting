@@ -9,7 +9,7 @@ meta4.automation.employee = (function () {
 
     /**
      * Carga la actividad del empleado
-     * @param {meta4.M4Object} isManager 
+     * @param {meta4.M4Object} m4Object 
      */
     function loadEmployeeActivity(m4Object) {
         var m4Request = new meta4.M4Request(m4Object, 'MY_ACTIVITY_M4NODE', 'LOAD_ACTIVITY', null);
@@ -24,7 +24,7 @@ meta4.automation.employee = (function () {
         meta4.data.execute(m4Request, onRequestSuccess);	
     }
 
-return {
+    return {
         loadEmployeeActivity : loadEmployeeActivity,
     };
 
