@@ -70,7 +70,7 @@ meta4.automationLegacy.employee = (function () {
     }
 
     function init(){
-        setM4Object(new meta4.M4Object("PLCO_MY_M4O", "PLCO_MY_M4O"));
+        _setM4Object(new meta4.M4Object("PLCO_MY_M4O", "PLCO_MY_M4O"));
         meta4.widget.utils.closingChecker(this.m4object);
 
         $(document.head).getElement('title').set('text', this.m4object.getObjectMetadata().getProperty('Name'));
