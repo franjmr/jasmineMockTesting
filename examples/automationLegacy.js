@@ -37,6 +37,7 @@ meta4.automationLegacy.employee = (function () {
         m4NodeDetail.moveTo(0);
         var isPrivate = m4NodeDetail.getValue('PROP_IS_PRIVATE');
         if(isPrivate){
+            _empDetail = null;
             throw new Error("Whoops is a private profile");
         }
         _setEmpDetail(
