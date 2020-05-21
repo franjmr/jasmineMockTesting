@@ -4,12 +4,12 @@ if(window.require){
 }
 
 describe("Automation - Employee: Load Employee Activity (Suite)", function () {
-    var mock_M4RequestConstructor;
-    var mock_M4ObjectConstructor;
-    var mock_M4ObjectInstance;
-    var mock_M4ObjectInstance2;
-    var mock_M4RequestInstance;
-    var mock_M4NodeInstance;
+    var mock_M4Node;
+    var mock_M4Object_arg;
+    var mock_M4Object_ref;
+    var mock_M4Request;
+    var mock_M4RequestApi;
+    var mock_M4ObjectApi;
 
     beforeEach(function () {
         //M4JSAPI Objects
