@@ -35,15 +35,15 @@ meta4.automationLegacy.employee = (function () {
             throw new Error("Whoops Empty Node!");
         }
         m4NodeDetail.moveTo(0);
-        var isPrivate = m4NodeDetail.getValue('PROP_IS_PRIVATE');
+        var isPrivate = meta4.data.utils.getValue(m4NodeDetail, 'PROP_IS_PRIVATE');
         if(isPrivate){
             _empDetail = null;
             throw new Error("Whoops is a private profile");
         }
         _setEmpDetail(
-            m4NodeDetail.getValue('PROP_ID'),
-            m4NodeDetail.getValue('PROP_NAME'), 
-            m4NodeDetail.getValue('PROP_AGE')
+            meta4.data.utils.getValue(m4NodeDetail, 'PROP_ID'),
+            meta4.data.utils.getValue(m4NodeDetail, 'PROP_NAME'), 
+            meta4.data.utils.getValue(m4NodeDetail, 'PROP_AGE')
         );
 
         _printEmployeeDetail();
@@ -87,9 +87,7 @@ meta4.automationLegacy.employee = (function () {
     var __testonly__ = {};
     __testonly__._onLoadEmployeeDetailSuccess = _onLoadEmployeeDetailSuccess
     __testonly__._setM4Object = _setM4Object
-    __testonly__._getEmpDetail = _getEmpDetail
-
-
+    
     /** end-test-code */
 
     return {
