@@ -11,7 +11,7 @@ describe("Automation Legacy - Employee: Load Employee Detail (Suite)", function 
         mock_M4Node = jasmine.createSpyObj("mock_M4Node",['count','moveTo']);
         mock_M4Object= jasmine.createSpyObj("mock_M4Object",['getNode']);
         meta4.data = {}
-        meta4.data.utils = {};
+        meta4.data.utils = { getValue: null};
     });
 
     it("should not throw Error with a public employe profile", function () {
